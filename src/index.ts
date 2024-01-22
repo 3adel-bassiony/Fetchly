@@ -20,6 +20,7 @@ export class Fetchly {
 	private onSuccess?: () => void
 	private onError?: () => void
 	private onInternalError?: () => void
+	private enableDebug: boolean
 
 	/**
 	 * Constructs a new instance of the Fetchly class.
@@ -67,6 +68,7 @@ export class Fetchly {
 			redirect,
 			referrer,
 			referrerPolicy,
+			enableDebug,
 			onRequest,
 			onSuccess,
 			onError,
@@ -83,6 +85,7 @@ export class Fetchly {
 		this.redirect = redirect ?? 'follow'
 		this.referrer = referrer ?? 'about:client'
 		this.referrerPolicy = referrerPolicy ?? 'no-referrer'
+		this.enableDebug = enableDebug ?? false
 		this.onRequest = onRequest
 		this.onSuccess = onSuccess
 		this.onError = onError
@@ -150,6 +153,8 @@ export class Fetchly {
 					: ''
 			const baseURL = options?.baseURL ?? this.baseURL ?? ''
 			const fullURL = baseURL + url + queryString
+			const enableDebug = options?.enableDebug ?? this.enableDebug
+			const startTime = performance.now()
 
 			this?.onRequest?.()
 			options?.onRequest?.()
@@ -173,6 +178,20 @@ export class Fetchly {
 			const response = await fetch(fullURL, fetchOptions)
 
 			const parsedResponse = await response.json()
+
+			if (enableDebug) {
+				const endTime = performance.now()
+
+				const duration = Math.floor(endTime - startTime).toFixed(0)
+
+				console.debug(`${method} -> ${fullURL} -> `, {
+					status: response.status,
+					duration: `${duration} ms`,
+					options: fetchOptions,
+					body: body ?? null,
+					response: parsedResponse,
+				})
+			}
 
 			if (!response.ok) {
 				this?.onError?.()

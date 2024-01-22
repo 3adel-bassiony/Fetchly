@@ -245,6 +245,7 @@ The Fetchly package comes with a comprehensive set of features designed to make 
     | referrer        | string      | about:client | A string whose value is a same-origin URL, "about:client", or the empty string, to set request's referrer.                                                 |
     | referrerPolicy  | string      | no-referrer  | A referrer policy to set request's referrerPolicy.                                                                                                         |
     | signal          | AbortSignal | undefined    | An AbortSignal to set the request's signal.                                                                                                                |
+    | enableDebug     | boolean     | false        | A boolean flag to show a console debug for the full request details .                                                                                      |
     | onRequest       | function    | undefined    | A callback function to be called before the request is sent.                                                                                               |
     | onSuccess       | function    | undefined    | A callback function to be called when the request is successful.                                                                                           |
     | onError         | function    | undefined    | A callback function to be called when an error occurs during the request.                                                                                  |
