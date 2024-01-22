@@ -187,7 +187,7 @@ describe('Fetchly Error Handling and Response Validation', () => {
 		expect(statusText).toBe('Not Found')
 		expect(status).toBe(Status.Error)
 		expect(hasError).toBe(true)
-		expect(errorType).toBe('API')
+		expect(errorType).toBe('api')
 		expect(internalError).toBeNull()
 	})
 })
