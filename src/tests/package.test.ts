@@ -191,3 +191,49 @@ describe('Fetchly Error Handling and Response Validation', () => {
 		expect(internalError).toBeNull()
 	})
 })
+
+describe('Fetchly Hooks', () => {
+	it('Should be able to use onRequest hook', async () => {
+		let text = null
+		await fetchly.get('/products/1', {
+			onRequest: () => {
+				text = 'Requested'
+			},
+		})
+
+		expect(text).toBe('Requested')
+	})
+
+	it('Should be able to use onSuccess hook', async () => {
+		let text = null
+		await fetchly.get('/products/1', {
+			onSuccess: () => {
+				text = 'Success'
+			},
+		})
+
+		expect(text).toBe('Success')
+	})
+
+	it('Should be able to use onError hook', async () => {
+		let text = null
+		await fetchly.get('/http/404/Hello_Peter', {
+			onError: () => {
+				text = 'Error'
+			},
+		})
+
+		expect(text).toBe('Error')
+	})
+
+	it('Should be able to use onInternalError hook', async () => {
+		let text = null
+		await fetchly.get('//', {
+			onInternalError: () => {
+				text = 'Error'
+			},
+		})
+
+		expect(text).toBe('Error')
+	})
+})

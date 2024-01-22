@@ -18,4 +18,5 @@ export type Options = {
 	onRequest?: () => void
 	onSuccess?: () => void
 	onError?: () => void
+	onInternalError?: () => void
 }

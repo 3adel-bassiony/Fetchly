@@ -19,6 +19,7 @@ export class Fetchly {
 	private onRequest?: () => void
 	private onSuccess?: () => void
 	private onError?: () => void
+	private onInternalError?: () => void
 
 	/**
 	 * Constructs a new instance of the Fetchly class.
@@ -69,6 +70,7 @@ export class Fetchly {
 			onRequest,
 			onSuccess,
 			onError,
+			onInternalError,
 		} = options
 
 		this.baseURL = baseURL
@@ -84,6 +86,7 @@ export class Fetchly {
 		this.onRequest = onRequest
 		this.onSuccess = onSuccess
 		this.onError = onError
+		this.onInternalError = onInternalError
 	}
 
 	/**
@@ -204,8 +207,8 @@ export class Fetchly {
 				statusText = error.statusText
 			}
 
-			this?.onError?.()
-			options?.onError?.()
+			this?.onInternalError?.()
+			options?.onInternalError?.()
 
 			return {
 				status: Status.Error,
