@@ -6,7 +6,7 @@
 ![gh-workflow-image](https://img.shields.io/github/actions/workflow/status/3adel-bassiony/fetchly/main.yml)
 ![NPM](https://img.shields.io/npm/l/fetchly)
 
-Discover Fetchly, a remarkably efficient 3kb fetchly solution for JavaScript and Node.js, ideal for developers prioritizing performance and simplicity. Written in TypeScript, it offers seamless integration for both TypeScript and JavaScript projects. Its compact size belies its powerful functionality, making it perfect for lightweight, modern applications. With ESM compatibility, Fetchly aligns with contemporary development practices, ensuring its utility in a range of projects from small-scale to complex.
+Discover Fetchly, a remarkably efficient 1kb fetchly solution for JavaScript and Node.js, ideal for developers prioritizing performance and simplicity. Written in TypeScript, it offers seamless integration for both TypeScript and JavaScript projects. Its compact size belies its powerful functionality, making it perfect for lightweight, modern applications. With ESM compatibility, Fetchly aligns with contemporary development practices, ensuring its utility in a range of projects from small-scale to complex.
 
 &nbsp;
 
@@ -232,22 +232,23 @@ The Fetchly package comes with a comprehensive set of features designed to make 
 
     When making a request or creating a new instance of Fetchly, you can configure it and pass various options. Here are the available options along with their default values:
 
-    | option         | Type        | Default      | Description                                                                                                                                                |
-    | -------------- | ----------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | baseURL        | string      | undefined    | Base URL for the request.                                                                                                                                  |
-    | headers        | object      | undefined    | Request headers.                                                                                                                                           |
-    | searchParams   | object      | undefined    | Adds query search params to the URL.                                                                                                                       |
-    | timeout        | number      | 30000        | Milliseconds to automatically abort the request.                                                                                                           |
-    | mode           | string      | same-origin  | A string to indicate whether the request will use CORS, or will be restricted to same-origin URLs. Sets request mode.                                      |
-    | cache          | string      | default      | A string indicating how the request will interact with the browser's cache to set the request's cache.                                                     |
-    | credentials    | string      | same-origin  | A string indicating whether credentials will be sent with the request always, never, or only when sent to a same-origin URL. Sets request credentials.     |
-    | redirect       | string      | follow       | A string indicating whether a request follows redirects, results in an error upon encountering a redirect, or returns the redirect (in an opaque fashion). |
-    | referrer       | string      | about:client | A string whose value is a same-origin URL, "about:client", or the empty string, to set request's referrer.                                                 |
-    | referrerPolicy | string      | no-referrer  | A referrer policy to set request's referrerPolicy.                                                                                                         |
-    | signal         | AbortSignal | undefined    | An AbortSignal to set the request's signal.                                                                                                                |
-    | onRequest      | function    | undefined    | A callback function to be called before the request is sent.                                                                                               |
-    | onSuccess      | function    | undefined    | A callback function to be called when the request is successful.                                                                                           |
-    | onError        | function    | undefined    | A callback function to be called when an error occurs during the request.                                                                                  |
+    | option          | Type        | Default      | Description                                                                                                                                                |
+    | --------------- | ----------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | baseURL         | string      | undefined    | Base URL for the request.                                                                                                                                  |
+    | headers         | object      | undefined    | Request headers.                                                                                                                                           |
+    | searchParams    | object      | undefined    | Adds query search params to the URL.                                                                                                                       |
+    | timeout         | number      | 30000        | Milliseconds to automatically abort the request.                                                                                                           |
+    | mode            | string      | same-origin  | A string to indicate whether the request will use CORS, or will be restricted to same-origin URLs. Sets request mode.                                      |
+    | cache           | string      | default      | A string indicating how the request will interact with the browser's cache to set the request's cache.                                                     |
+    | credentials     | string      | same-origin  | A string indicating whether credentials will be sent with the request always, never, or only when sent to a same-origin URL. Sets request credentials.     |
+    | redirect        | string      | follow       | A string indicating whether a request follows redirects, results in an error upon encountering a redirect, or returns the redirect (in an opaque fashion). |
+    | referrer        | string      | about:client | A string whose value is a same-origin URL, "about:client", or the empty string, to set request's referrer.                                                 |
+    | referrerPolicy  | string      | no-referrer  | A referrer policy to set request's referrerPolicy.                                                                                                         |
+    | signal          | AbortSignal | undefined    | An AbortSignal to set the request's signal.                                                                                                                |
+    | onRequest       | function    | undefined    | A callback function to be called before the request is sent.                                                                                               |
+    | onSuccess       | function    | undefined    | A callback function to be called when the request is successful.                                                                                           |
+    | onError         | function    | undefined    | A callback function to be called when an error occurs during the request.                                                                                  |
+    | onInternalError | function    | undefined    | A callback function to be called when an internal error occurs during the request.                                                                         |
 
 &nbsp;
 
