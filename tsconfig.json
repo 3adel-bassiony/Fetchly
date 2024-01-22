@@ -1,0 +1,24 @@
+{
+	"include": ["./src/**/*"],
+	"exclude": ["node_modules", "build", "./src/tests/**/*"],
+	"compilerOptions": {
+		"declaration": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"module": "ESNext",
+		"esModuleInterop": true,
+		"target": "ESNext",
+		"moduleResolution": "Bundler",
+		"outDir": "./build",
+		"forceConsistentCasingInFileNames": true,
+		"strictPropertyInitialization": false,
+		"strict": true,
+		"skipLibCheck": true,
+		"downlevelIteration": true,
+		"rootDir": "./src",
+		"composite": true,
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	}
+}
