@@ -100,6 +100,8 @@ The Fetchly package comes with a comprehensive set of features designed to make 
         -   **Simpler APIs**: Make requests with simple APIs then fetch.
         -   **Lightweight & Dependency-Free**: No external dependencies, making it a lightweight addition to projects. This ensures minimal impact on bundle size.
         -   **Ease of Use**: Designed with a user-friendly interface, making it straightforward to integrate into existing projects.
+        -   **Automatic request body serialization**: Automatically serialize request bodies to the appropriate format based on the specified content type.
+        -   **Automatic response serialization**: Automatically serialize response bodies based on the specified content type.
         -   **Flexible & Configurable**: Advanced support for plural forms and number formatting.
         -   **Cross-Platform Compatibility**: Compatible with various JavaScript environments, including Node.js and browser-based applications.
         -   **100% TypeScript**: This package is fully written in TypeScript, offering first-class support to leverage TypeScript's powerful type-checking and development features.
