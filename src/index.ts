@@ -22,7 +22,7 @@ export class Fetchly {
 	private onSuccess?: () => void
 	private onError?: () => void
 	private onInternalError?: () => void
-	private enableDebug: boolean
+	private showLogs: boolean
 
 	/**
 	 * Constructs a new instance of the Fetchly class.
@@ -71,7 +71,7 @@ export class Fetchly {
 			referrer,
 			referrerPolicy,
 			responseFormat,
-			enableDebug,
+			showLogs,
 			onRequest,
 			onSuccess,
 			onError,
@@ -89,7 +89,7 @@ export class Fetchly {
 		this.referrer = referrer ?? 'about:client'
 		this.referrerPolicy = referrerPolicy ?? 'no-referrer'
 		this.responseFormat = responseFormat
-		this.enableDebug = enableDebug ?? false
+		this.showLogs = showLogs ?? false
 		this.onRequest = onRequest
 		this.onSuccess = onSuccess
 		this.onError = onError
@@ -150,7 +150,7 @@ export class Fetchly {
 		options?: Options,
 		body?: unknown
 	): Promise<FetchlyResult<T, E>> {
-		const enableDebug = options?.enableDebug ?? this.enableDebug
+		const showLogs = options?.showLogs ?? this.showLogs
 		const startTime = performance.now()
 		const queryString =
 			this.searchParams || options?.searchParams
@@ -220,7 +220,7 @@ export class Fetchly {
 					break
 			}
 
-			if (enableDebug) {
+			if (showLogs) {
 				const endTime = performance.now()
 
 				const duration = Math.floor(endTime - startTime).toFixed(0)
@@ -272,7 +272,7 @@ export class Fetchly {
 			this?.onInternalError?.()
 			options?.onInternalError?.()
 
-			if (enableDebug) {
+			if (showLogs) {
 				const endTime = performance.now()
 
 				const duration = Math.floor(endTime - startTime).toFixed(0)

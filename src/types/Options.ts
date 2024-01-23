@@ -18,7 +18,7 @@ export type Options = {
 	referrerPolicy?: ReferrerPolicy
 	signal?: AbortSignal | null
 	responseFormat?: ResponseFormat
-	enableDebug?: boolean
+	showLogs?: boolean
 	onRequest?: () => void
 	onSuccess?: () => void
 	onError?: () => void
