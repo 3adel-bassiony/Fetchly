@@ -149,13 +149,13 @@ The Fetchly package comes with a comprehensive set of features designed to make 
 
 -   ### Request Methods
 
-    -   **GET**: You can localize a message using one of those methods
+    -   **GET**: Use this method to make a GET request to retrieve the data from a server
 
         ```typescript
         const { data, error } = await fetchly.get('/products')
         ```
 
-    -   **POST**: You can localize a message using one of those methods
+    -   **POST**: Use this method to make a POST request to submit the data
 
         ```typescript
         const body = {
@@ -165,7 +165,7 @@ The Fetchly package comes with a comprehensive set of features designed to make 
         const { data, error } = await fetchly.post('/products', body)
         ```
 
-    -   **PUT**: Use this method to change the current locale of Fetchly
+    -   **PUT**: Use this method to make a PUT request to submit the data
 
         ```typescript
         const body = {
@@ -175,7 +175,7 @@ The Fetchly package comes with a comprehensive set of features designed to make 
         const { data, error } = await fetchly.put('/products/1', body)
         ```
 
-    -   **DELETE**: Use this method to check if the current locale is what you looking for or not.
+    -   **DELETE**: Use this method to make a DELETE request
 
         ```typescript
         const { data, error } = await fetchly.delete('/products/1')
@@ -183,7 +183,7 @@ The Fetchly package comes with a comprehensive set of features designed to make 
 
 -   ### Other Methods
 
-    -   **configure**: Use this method to check if the current locale is what you looking for or not.
+    -   **configure**: You can configure the Fetchly instance using this method, you will find all available options below:
 
         ```typescript
         fetchly.configure({
@@ -194,7 +194,7 @@ The Fetchly package comes with a comprehensive set of features designed to make 
         })
         ```
 
-    -   **convertSearchParamsToString** Check if a specific identifier exists in the localization object or not
+    -   **convertSearchParamsToString** A helper function that converts an object to a string so you can append it to the URL
 
         ```typescript
         const searchParams = {
