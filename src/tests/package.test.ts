@@ -228,12 +228,15 @@ describe('Fetchly Hooks', () => {
 
 	it('Should be able to use onInternalError hook', async () => {
 		let text = null
+
+		const fetchly = new Fetchly()
+
 		await fetchly.get('//', {
 			onInternalError: () => {
-				text = 'Error'
+				text = 'Internal Error'
 			},
 		})
 
-		expect(text).toBe('Error')
+		expect(text).toBe('Internal Error')
 	})
 })

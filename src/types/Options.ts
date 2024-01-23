@@ -1,3 +1,5 @@
+import { ResponseFormat } from '../enums/ResponseFormat'
+
 import { SearchParams } from './SearchParams'
 
 /**
@@ -15,6 +17,7 @@ export type Options = {
 	referrer?: string
 	referrerPolicy?: ReferrerPolicy
 	signal?: AbortSignal | null
+	responseFormat?: ResponseFormat
 	enableDebug?: boolean
 	onRequest?: () => void
 	onSuccess?: () => void

@@ -1,5 +1,6 @@
 import { ErrorType } from './enums/ErrorType'
 import { Method } from './enums/Method'
+import { ResponseFormat } from './enums/ResponseFormat'
 import { Status } from './enums/Status'
 import { FetchlyResult } from './types/FetchlyResult'
 import { Options } from './types/Options'
@@ -16,6 +17,7 @@ export class Fetchly {
 	private redirect?: RequestRedirect
 	private referrer?: string
 	private referrerPolicy?: ReferrerPolicy
+	private responseFormat?: ResponseFormat
 	private onRequest?: () => void
 	private onSuccess?: () => void
 	private onError?: () => void
@@ -68,6 +70,7 @@ export class Fetchly {
 			redirect,
 			referrer,
 			referrerPolicy,
+			responseFormat,
 			enableDebug,
 			onRequest,
 			onSuccess,
@@ -85,6 +88,7 @@ export class Fetchly {
 		this.redirect = redirect ?? 'follow'
 		this.referrer = referrer ?? 'about:client'
 		this.referrerPolicy = referrerPolicy ?? 'no-referrer'
+		this.responseFormat = responseFormat
 		this.enableDebug = enableDebug ?? false
 		this.onRequest = onRequest
 		this.onSuccess = onSuccess
@@ -146,38 +150,75 @@ export class Fetchly {
 		options?: Options,
 		body?: unknown
 	): Promise<FetchlyResult<T, E>> {
-		try {
-			const queryString =
-				this.searchParams || options?.searchParams
-					? this.convertSearchParamsToString({ ...this.searchParams, ...options?.searchParams })
-					: ''
-			const baseURL = options?.baseURL ?? this.baseURL ?? ''
-			const fullURL = baseURL + url + queryString
-			const enableDebug = options?.enableDebug ?? this.enableDebug
-			const startTime = performance.now()
+		const enableDebug = options?.enableDebug ?? this.enableDebug
+		const startTime = performance.now()
+		const queryString =
+			this.searchParams || options?.searchParams
+				? this.convertSearchParamsToString({ ...this.searchParams, ...options?.searchParams })
+				: ''
+		const baseURL = options?.baseURL ?? this.baseURL ?? ''
+		const fullURL = baseURL + url + queryString
 
+		const fetchOptions: RequestInit = {
+			method,
+			headers: { ...this.headers, ...options?.headers },
+			mode: options?.mode ?? this.mode,
+			credentials: options?.credentials ?? this.credentials,
+			redirect: options?.redirect ?? this.redirect,
+			referrer: options?.referrer ?? this.referrer,
+			referrerPolicy: options?.referrerPolicy ?? this.referrerPolicy,
+			signal: AbortSignal.timeout(options?.timeout ?? this.timeout ?? 3000),
+			cache: options?.cache ?? this.cache,
+		}
+
+		if (body) {
+			fetchOptions.body = body instanceof FormData ? body : JSON.stringify(body)
+		}
+
+		try {
 			this?.onRequest?.()
 			options?.onRequest?.()
 
-			const fetchOptions: RequestInit = {
-				method,
-				headers: { ...this.headers, ...options?.headers },
-				mode: options?.mode ?? this.mode,
-				credentials: options?.credentials ?? this.credentials,
-				redirect: options?.redirect ?? this.redirect,
-				referrer: options?.referrer ?? this.referrer,
-				referrerPolicy: options?.referrerPolicy ?? this.referrerPolicy,
-				signal: AbortSignal.timeout(options?.timeout ?? this.timeout ?? 3000),
-				cache: options?.cache ?? this.cache,
-			}
-
-			if (body) {
-				fetchOptions.body = body instanceof FormData ? body : JSON.stringify(body)
-			}
-
 			const response = await fetch(fullURL, fetchOptions)
+			let responseFormat = options?.responseFormat ?? this.responseFormat
+			let parsedResponse = null
 
-			const parsedResponse = await response.json()
+			if (!responseFormat) {
+				const contentType = response.headers.get('Content-Type')
+
+				if (contentType?.includes('application/json')) {
+					responseFormat = ResponseFormat.JSON
+				} else if (contentType?.includes('text')) {
+					responseFormat = ResponseFormat.Text
+				} else if (contentType?.includes('blob')) {
+					responseFormat = ResponseFormat.Blob
+				} else if (contentType?.includes('form-data')) {
+					responseFormat = ResponseFormat.FormData
+				} else if (contentType?.includes('array-buffer')) {
+					responseFormat = ResponseFormat.ArrayBuffer
+				}
+			}
+
+			switch (responseFormat) {
+				case ResponseFormat.JSON:
+					parsedResponse = await response.json()
+					break
+				case ResponseFormat.Text:
+					parsedResponse = await response.text()
+					break
+				case ResponseFormat.Blob:
+					parsedResponse = await response.blob()
+					break
+				case ResponseFormat.FormData:
+					parsedResponse = await response.formData()
+					break
+				case ResponseFormat.ArrayBuffer:
+					parsedResponse = await response.arrayBuffer()
+					break
+				default:
+					parsedResponse = await response.json()
+					break
+			}
 
 			if (enableDebug) {
 				const endTime = performance.now()
@@ -189,6 +230,8 @@ export class Fetchly {
 					duration: `${duration} ms`,
 					options: fetchOptions,
 					body: body ?? null,
+					requestHeaders: fetchOptions.headers,
+					responseHeaders: Object.fromEntries(response.headers.entries()),
 					response: parsedResponse,
 				})
 			}
@@ -228,6 +271,20 @@ export class Fetchly {
 
 			this?.onInternalError?.()
 			options?.onInternalError?.()
+
+			if (enableDebug) {
+				const endTime = performance.now()
+
+				const duration = Math.floor(endTime - startTime).toFixed(0)
+
+				console.debug(`${method} -> ${fullURL} -> `, {
+					status: statusCode,
+					duration: `${duration} ms`,
+					options: fetchOptions,
+					body: body ?? null,
+					error,
+				})
+			}
 
 			return {
 				status: Status.Error,
