@@ -196,9 +196,13 @@ The Fetchly package comes with a comprehensive set of features designed to make 
         })
         ```
 
-    -   **convertSearchParamsToString** A helper function that converts an object to a string so you can append it to the URL
+-   ### Helpers
+
+    -   **stringifySearchParams** A helper function that converts an object to a string so you can append it to the URL
 
         ```typescript
+        import { stringifySearchParams } from 'fetchly/helpers/stringifySearchParams'
+
         const searchParams = {
         	page: 1,
         	per_page: 10,
@@ -206,7 +210,7 @@ The Fetchly package comes with a comprehensive set of features designed to make 
         	order_by: null,
         }
 
-        fetchly.convertSearchParamsToString(searchParams) // ?page=1&per_page=10&sort_by=title
+        const queryString = stringifySearchParams(searchParams) // ?page=1&per_page=10&sort_by=title
         ```
 
 -   ### Request Result

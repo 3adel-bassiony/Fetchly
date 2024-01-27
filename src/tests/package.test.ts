@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { Status } from '../enums/Status'
+import { stringifySearchParams } from '../helpers/stringifySearchParams'
 import fetchly, { Fetchly } from '../index'
 
 describe('Fetchly', () => {
@@ -37,17 +38,6 @@ describe('Fetchly', () => {
 		expect(fetchly).toHaveProperty('headers', {
 			'Content-Type': 'application/json',
 		})
-	})
-
-	it('Should be able to convert search params to string', async () => {
-		const searchParams = {
-			page: 1,
-			per_page: 10,
-			sort_by: 'title',
-			order_by: 'asc',
-		}
-
-		expect(fetchly.convertSearchParamsToString(searchParams)).toBe('?page=1&per_page=10&sort_by=title&order_by=asc')
 	})
 })
 
@@ -238,5 +228,18 @@ describe('Fetchly Hooks', () => {
 		})
 
 		expect(text).toBe('Internal Error')
+	})
+})
+
+describe('Fetchly Helpers', () => {
+	it('Should stringify the search params and return a string', async () => {
+		const searchParams = {
+			page: 1,
+			per_page: 10,
+			sort_by: 'title',
+			order_by: 'asc',
+		}
+
+		expect(stringifySearchParams(searchParams)).toBe('?page=1&per_page=10&sort_by=title&order_by=asc')
 	})
 })
