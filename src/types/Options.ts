@@ -1,5 +1,6 @@
 import { ResponseFormat } from '../enums/ResponseFormat'
 
+import { NextFetchRequestConfig } from './NextFetchRequestConfig'
 import { SearchParams } from './SearchParams'
 
 /**
@@ -18,6 +19,7 @@ export type Options = {
 	referrerPolicy?: ReferrerPolicy
 	signal?: AbortSignal | null
 	responseFormat?: ResponseFormat
+	next?: NextFetchRequestConfig | undefined
 	showLogs?: boolean
 	onRequest?: () => void
 	onSuccess?: () => void

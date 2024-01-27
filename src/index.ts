@@ -3,6 +3,7 @@ import { Method } from './enums/Method'
 import { ResponseFormat } from './enums/ResponseFormat'
 import { Status } from './enums/Status'
 import { FetchlyResult } from './types/FetchlyResult'
+import { NextFetchRequestConfig } from './types/NextFetchRequestConfig'
 import { Options } from './types/Options'
 import { SearchParams } from './types/SearchParams'
 
@@ -18,11 +19,12 @@ export class Fetchly {
 	private referrer?: string
 	private referrerPolicy?: ReferrerPolicy
 	private responseFormat?: ResponseFormat
+	private next?: NextFetchRequestConfig | undefined
+	private showLogs: boolean
 	private onRequest?: () => void
 	private onSuccess?: () => void
 	private onError?: () => void
 	private onInternalError?: () => void
-	private showLogs: boolean
 
 	/**
 	 * Constructs a new instance of the Fetchly class.
@@ -71,6 +73,7 @@ export class Fetchly {
 			referrer,
 			referrerPolicy,
 			responseFormat,
+			next,
 			showLogs,
 			onRequest,
 			onSuccess,
@@ -89,6 +92,7 @@ export class Fetchly {
 		this.referrer = referrer ?? 'about:client'
 		this.referrerPolicy = referrerPolicy ?? 'no-referrer'
 		this.responseFormat = responseFormat
+		this.next = next
 		this.showLogs = showLogs ?? false
 		this.onRequest = onRequest
 		this.onSuccess = onSuccess
@@ -158,6 +162,9 @@ export class Fetchly {
 				: ''
 		const baseURL = options?.baseURL ?? this.baseURL ?? ''
 		const fullURL = baseURL + url + queryString
+		const nextConfig = {
+			next: options?.next ?? this.next,
+		}
 
 		const fetchOptions: RequestInit = {
 			method,
@@ -171,8 +178,15 @@ export class Fetchly {
 			cache: options?.cache ?? this.cache,
 		}
 
+		// Append body to fetch options
 		if (body) {
 			fetchOptions.body = body instanceof FormData ? body : JSON.stringify(body)
+		}
+
+		// Append next.js fetch config to fetch options
+		if (method === Method.GET) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			(fetchOptions as any).next = nextConfig
 		}
 
 		try {
