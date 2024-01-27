@@ -66,8 +66,8 @@ Then create a new instance for Fetchly and pass the configuration to it:
 
 ```typescript
 const fetchly = new Fetchly({
-	baseURL: 'api.example.com',
-	timeout: 1000,
+baseURL: 'api.example.com',
+timeout: 1000,
 })
 ```
 
