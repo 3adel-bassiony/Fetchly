@@ -2,16 +2,16 @@ import { ErrorType } from './enums/ErrorType'
 import { Method } from './enums/Method'
 import { ResponseFormat } from './enums/ResponseFormat'
 import { Status } from './enums/Status'
-import { stringifySearchParams } from './helpers/stringifySearchParams'
+import { stringifyParams } from './helpers/stringifyParams'
 import { FetchlyResult } from './types/FetchlyResult'
 import { NextFetchRequestConfig } from './types/NextFetchRequestConfig'
 import { Options } from './types/Options'
-import { SearchParams } from './types/SearchParams'
+import { Params } from './types/Params'
 
 export class Fetchly {
 	private baseURL?: string
 	private headers?: HeadersInit
-	private searchParams?: SearchParams
+	private params?: Params
 	private timeout?: number
 	private mode?: RequestMode
 	private cache?: RequestCache
@@ -65,7 +65,7 @@ export class Fetchly {
 		const {
 			baseURL,
 			headers,
-			searchParams,
+			params,
 			timeout,
 			mode,
 			cache,
@@ -84,7 +84,7 @@ export class Fetchly {
 
 		this.baseURL = baseURL
 		this.headers = headers
-		this.searchParams = searchParams
+		this.params = params
 		this.timeout = timeout ?? 30000
 		this.mode = mode ?? 'same-origin'
 		this.cache = cache ?? 'default'
@@ -112,7 +112,7 @@ export class Fetchly {
 	 * @returns {Promise<FetchlyResult<T, E>>} A promise that resolves to the fetch response.
 	 *
 	 * @example
-	 * const response = await _fetch<UserData, APIError>('/users', 'GET', { searchParams: { page: 1 } });
+	 * const response = await _fetch<UserData, APIError>('/users', 'GET', { params: { page: 1 } });
 	 * if (response.status === Status.Success) {
 	 *   console.log('Data:', response.data);
 	 * } else {
@@ -128,8 +128,8 @@ export class Fetchly {
 		const showLogs = options?.showLogs ?? this.showLogs
 		const startTime = performance.now()
 		const queryString =
-			this.searchParams || options?.searchParams
-				? stringifySearchParams({ ...this.searchParams, ...options?.searchParams })
+			this.params || options?.params
+				? stringifyParams({ ...this.params, ...options?.params })
 				: ''
 		const baseURL = options?.baseURL ?? this.baseURL ?? ''
 		const fullURL = baseURL + url + queryString

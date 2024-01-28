@@ -198,19 +198,19 @@ The Fetchly package comes with a comprehensive set of features designed to make 
 
 -   ### Helpers
 
-    -   **stringifySearchParams** A helper function that converts an object to a string so you can append it to the URL
+    -   **stringifyParams** A helper function that converts an object to a string so you can append it to the URL
 
         ```typescript
-        import { stringifySearchParams } from 'fetchly/helpers/stringifySearchParams'
+        import { stringifyParams } from 'fetchly/helpers/stringifyParams'
 
-        const searchParams = {
+        const params = {
         	page: 1,
         	per_page: 10,
         	sort_by: 'title',
         	order_by: null,
         }
 
-        const queryString = stringifySearchParams(searchParams) // ?page=1&per_page=10&sort_by=title
+        const queryString = stringifyParams(params) // ?page=1&per_page=10&sort_by=title
         ```
 
 -   ### Request Result
@@ -242,7 +242,7 @@ The Fetchly package comes with a comprehensive set of features designed to make 
     | --------------- | ---------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
     | baseURL         | string                 | undefined    | Base URL for the request.                                                                                                                                  |
     | headers         | object                 | undefined    | Request headers.                                                                                                                                           |
-    | searchParams    | object                 | undefined    | Adds query search params to the URL.                                                                                                                       |
+    | params          | object                 | undefined    | Adds query params to the request URL.                                                                                                                      |
     | timeout         | number                 | 30000        | Milliseconds to automatically abort the request.                                                                                                           |
     | mode            | string                 | same-origin  | A string to indicate whether the request will use CORS, or will be restricted to same-origin URLs. Sets request mode.                                      |
     | cache           | string                 | default      | A string indicating how the request will interact with the browser's cache to set the request's cache.                                                     |

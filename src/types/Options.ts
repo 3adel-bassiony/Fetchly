@@ -1,7 +1,7 @@
 import { ResponseFormat } from '../enums/ResponseFormat'
 
 import { NextFetchRequestConfig } from './NextFetchRequestConfig'
-import { SearchParams } from './SearchParams'
+import { Params } from './Params'
 
 /**
  * Represents the options for making a fetch request.
@@ -9,7 +9,7 @@ import { SearchParams } from './SearchParams'
 export type Options = {
 	baseURL?: string
 	headers?: HeadersInit
-	searchParams?: SearchParams
+	params?: Params
 	timeout?: number
 	mode?: RequestMode
 	cache?: RequestCache

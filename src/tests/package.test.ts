@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { Status } from '../enums/Status'
-import { stringifySearchParams } from '../helpers/stringifySearchParams'
+import { stringifyParams } from '../helpers/stringifyParams'
 import fetchly, { Fetchly } from '../index'
 
 describe('Fetchly', () => {
@@ -233,13 +233,13 @@ describe('Fetchly Hooks', () => {
 
 describe('Fetchly Helpers', () => {
 	it('Should stringify the search params and return a string', async () => {
-		const searchParams = {
+		const params = {
 			page: 1,
 			per_page: 10,
 			sort_by: 'title',
 			order_by: 'asc',
 		}
 
-		expect(stringifySearchParams(searchParams)).toBe('?page=1&per_page=10&sort_by=title&order_by=asc')
+		expect(stringifyParams(params)).toBe('?page=1&per_page=10&sort_by=title&order_by=asc')
 	})
 })
