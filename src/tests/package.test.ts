@@ -243,3 +243,30 @@ describe('Fetchly Helpers', () => {
 		expect(stringifyParams(params)).toBe('?page=1&per_page=10&sort_by=title&order_by=asc')
 	})
 })
+
+describe('Next.js Support', () => {
+	it('Should make a GET request with next configuration', async () => {
+		const fetchly = new Fetchly({
+			baseURL: 'https://dummyjson.com',
+			showLogs: true,
+			next: {
+				revalidate: 10,
+				tags: ['test'],
+			},
+		})
+
+		await fetchly.get('/products/1')
+	})
+
+	it('Should make a GET request with global and local next configuration', async () => {
+		const fetchly = new Fetchly({
+			baseURL: 'https://dummyjson.com',
+			showLogs: true,
+			next: {
+				revalidate: 10,
+			},
+		})
+
+		await fetchly.get('/products/1', { next: { revalidate: 20, tags: ['test2'] } })
+	})
+})

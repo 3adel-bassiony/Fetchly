@@ -128,13 +128,13 @@ export class Fetchly {
 		const showLogs = options?.showLogs ?? this.showLogs
 		const startTime = performance.now()
 		const queryString =
-			this.params || options?.params
-				? stringifyParams({ ...this.params, ...options?.params })
-				: ''
+			this.params || options?.params ? stringifyParams({ ...this.params, ...options?.params }) : ''
 		const baseURL = options?.baseURL ?? this.baseURL ?? ''
 		const fullURL = baseURL + url + queryString
-		const nextConfig = {
-			next: options?.next ?? this.next,
+
+		const nextConfig: NextFetchRequestConfig = {
+			revalidate: options?.next?.revalidate ?? this.next?.revalidate,
+			tags: options?.next?.tags ?? this.next?.tags,
 		}
 
 		const fetchOptions: RequestInit = {
