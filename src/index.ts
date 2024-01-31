@@ -117,7 +117,9 @@ export class Fetchly {
 	 * // Output: { revalidate: 60, tags: ['posts', 'comments'] }
 	 */
 	private generateNextConfig(options?: Options): NextFetchRequestConfig | null {
-		const { revalidate, tags } = options?.next ?? this.next ?? {}
+		const revalidate = options?.next?.revalidate ?? this.next?.revalidate
+		const tags = options?.next?.tags ?? this.next?.tags
+
 		const nextConfig: NextFetchRequestConfig = {}
 
 		if (revalidate) {
@@ -259,6 +261,7 @@ export class Fetchly {
 			}
 
 			return {
+				options: fetchOptions,
 				status: response.ok ? Status.Success : Status.Error,
 				statusCode: response.status,
 				statusText: response.statusText,
@@ -301,6 +304,7 @@ export class Fetchly {
 			}
 
 			return {
+				options: fetchOptions,
 				status: Status.Error,
 				statusCode,
 				statusText,

@@ -251,11 +251,14 @@ describe('Next.js Support', () => {
 			showLogs: true,
 			next: {
 				revalidate: 10,
-				tags: ['test'],
 			},
 		})
 
 		await fetchly.get('/products/1')
+
+		expect(fetchly).toHaveProperty('next', {
+			revalidate: 10,
+		})
 	})
 
 	it('Should make a GET request with global and local next configuration', async () => {

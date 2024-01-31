@@ -8,10 +8,11 @@ import { Status } from '../enums/Status'
  * @template E - The type of the error returned by the operation.
  */
 export type FetchlyResult<T = unknown, E = unknown> = {
-	data: T | null
+	options: FetchRequestInit
 	status: Status
 	statusCode: number
 	statusText: string
+	data: T | null
 	hasError: boolean
 	errorType: ErrorType | null
 	error: E | null
