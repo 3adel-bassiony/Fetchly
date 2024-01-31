@@ -1,6 +1,6 @@
 {
 	"name": "fetchly",
-	"version": "1.6.1",
+	"version": "1.6.2",
 	"description": "A lightweight and simple package for making requests using fetch",
 	"main": "build/index.js",
 	"types": "build/index.d.ts",
