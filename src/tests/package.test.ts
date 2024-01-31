@@ -282,3 +282,60 @@ describe('Next.js Support', () => {
 		await fetchly.get('/products/1')
 	})
 })
+
+describe('Passing Other Options', () => {
+	it('Should make a GET request with custom global options', async () => {
+		const fetchly = new Fetchly({
+			baseURL: 'https://dummyjson.com',
+			showLogs: true,
+			additionalOptions: {
+				foo: 'bar',
+			},
+		})
+
+		const { options } = await fetchly.get('/products/1')
+
+		expect(fetchly).toHaveProperty('additionalOptions', {
+			foo: 'bar',
+		})
+
+		expect(options).toHaveProperty('foo', 'bar')
+	})
+
+	it('Should make a GET request with custom local options', async () => {
+		const fetchly = new Fetchly({
+			baseURL: 'https://dummyjson.com',
+			showLogs: true,
+		})
+
+		const { options } = await fetchly.get('/products/1', {
+			additionalOptions: {
+				foo: 'bar',
+			},
+		})
+
+		expect(options).toHaveProperty('foo', 'bar')
+	})
+
+	it('Should make a GET request with custom global and local options', async () => {
+		const fetchly = new Fetchly({
+			baseURL: 'https://dummyjson.com',
+			showLogs: true,
+			additionalOptions: {
+				foo: 'bar',
+			},
+		})
+
+		const { options } = await fetchly.get('/products/1', {
+			additionalOptions: {
+				baz: 'bar',
+			},
+		})
+		expect(fetchly).toHaveProperty('additionalOptions', {
+			foo: 'bar',
+		})
+
+		expect(options).toHaveProperty('foo', 'bar')
+		expect(options).toHaveProperty('baz', 'bar')
+	})
+})

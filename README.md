@@ -238,26 +238,27 @@ The Fetchly package comes with a comprehensive set of features designed to make 
 
     When making a request or creating a new instance of Fetchly, you can configure it and pass various options. Here are the available options along with their default values:
 
-    | option          | Type                   | Default      | Description                                                                                                                                                |
-    | --------------- | ---------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | baseURL         | string                 | undefined    | Base URL for the request.                                                                                                                                  |
-    | headers         | object                 | undefined    | Request headers.                                                                                                                                           |
-    | params          | object                 | undefined    | Adds query params to the request URL.                                                                                                                      |
-    | timeout         | number                 | 30000        | Milliseconds to automatically abort the request.                                                                                                           |
-    | mode            | string                 | same-origin  | A string to indicate whether the request will use CORS, or will be restricted to same-origin URLs. Sets request mode.                                      |
-    | cache           | string                 | default      | A string indicating how the request will interact with the browser's cache to set the request's cache.                                                     |
-    | credentials     | string                 | same-origin  | A string indicating whether credentials will be sent with the request always, never, or only when sent to a same-origin URL. Sets request credentials.     |
-    | redirect        | string                 | follow       | A string indicating whether a request follows redirects, results in an error upon encountering a redirect, or returns the redirect (in an opaque fashion). |
-    | referrer        | string                 | about:client | A string whose value is a same-origin URL, "about:client", or the empty string, to set request's referrer.                                                 |
-    | referrerPolicy  | string                 | no-referrer  | A referrer policy to set request's referrerPolicy.                                                                                                         |
-    | signal          | AbortSignal            | undefined    | An AbortSignal to set the request's signal.                                                                                                                |
-    | responseFormat  | string                 | json         | A string to controls whether the response should be in JSON format or other format.                                                                        |
-    | next            | NextFetchRequestConfig | undefined    | An object to specifies the configuration for the next.js fetch request, you can pass `revalidate` or `tags` to the object.                                 |
-    | showLogs        | boolean                | false        | A boolean flag to show a console debug for the full request details.                                                                                       |
-    | onRequest       | function               | undefined    | A callback function to be called before the request is sent.                                                                                               |
-    | onSuccess       | function               | undefined    | A callback function to be called when the request is successful.                                                                                           |
-    | onError         | function               | undefined    | A callback function to be called when an error occurs during the request.                                                                                  |
-    | onInternalError | function               | undefined    | A callback function to be called when an internal error occurs during the request.                                                                         |
+    | option          | Type                    | Default      | Description                                                                                                                                                |
+    | --------------- | ----------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | baseURL         | string                  | undefined    | Base URL for the request.                                                                                                                                  |
+    | headers         | object                  | undefined    | Request headers.                                                                                                                                           |
+    | params          | object                  | undefined    | Adds query params to the request URL.                                                                                                                      |
+    | timeout         | number                  | 30000        | Milliseconds to automatically abort the request.                                                                                                           |
+    | mode            | string                  | same-origin  | A string to indicate whether the request will use CORS, or will be restricted to same-origin URLs. Sets request mode.                                      |
+    | cache           | string                  | default      | A string indicating how the request will interact with the browser's cache to set the request's cache.                                                     |
+    | credentials     | string                  | same-origin  | A string indicating whether credentials will be sent with the request always, never, or only when sent to a same-origin URL. Sets request credentials.     |
+    | redirect        | string                  | follow       | A string indicating whether a request follows redirects, results in an error upon encountering a redirect, or returns the redirect (in an opaque fashion). |
+    | referrer        | string                  | about:client | A string whose value is a same-origin URL, "about:client", or the empty string, to set request's referrer.                                                 |
+    | referrerPolicy  | string                  | no-referrer  | A referrer policy to set request's referrerPolicy.                                                                                                         |
+    | signal          | AbortSignal             | undefined    | An AbortSignal to set the request's signal.                                                                                                                |
+    | responseFormat  | string                  | json         | A string to controls whether the response should be in JSON format or other format.                                                                        |
+    | next            | NextFetchRequestConfig  | undefined    | An object to specifies the configuration for the next.js fetch request, you can pass `revalidate` or `tags` to the object.                                 |
+    | additionalOptions    | Record<string, unknown> | undefined    | An object to pass a custom options to attach them to fetch options request.                                                                                |
+    | showLogs        | boolean                 | false        | A boolean flag to show a console debug for the full request details.                                                                                       |
+    | onRequest       | function                | undefined    | A callback function to be called before the request is sent.                                                                                               |
+    | onSuccess       | function                | undefined    | A callback function to be called when the request is successful.                                                                                           |
+    | onError         | function                | undefined    | A callback function to be called when an error occurs during the request.                                                                                  |
+    | onInternalError | function                | undefined    | A callback function to be called when an internal error occurs during the request.                                                                         |
 
 &nbsp;
 

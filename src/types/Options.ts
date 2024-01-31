@@ -21,6 +21,7 @@ export type Options = {
 	responseFormat?: ResponseFormat
 	next?: NextFetchRequestConfig | undefined
 	showLogs?: boolean
+	additionalOptions?: Record<string, unknown>
 	onRequest?: () => void
 	onSuccess?: () => void
 	onError?: () => void

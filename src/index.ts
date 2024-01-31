@@ -21,6 +21,7 @@ export class Fetchly {
 	private referrerPolicy?: ReferrerPolicy
 	private responseFormat?: ResponseFormat
 	private next?: NextFetchRequestConfig | undefined
+	private additionalOptions?: Record<string, unknown>
 	private showLogs: boolean
 	private onRequest?: () => void
 	private onSuccess?: () => void
@@ -75,6 +76,7 @@ export class Fetchly {
 			referrerPolicy,
 			responseFormat,
 			next,
+			additionalOptions,
 			showLogs,
 			onRequest,
 			onSuccess,
@@ -94,6 +96,7 @@ export class Fetchly {
 		this.referrerPolicy = referrerPolicy ?? 'no-referrer'
 		this.responseFormat = responseFormat
 		this.next = next
+		this.additionalOptions = additionalOptions
 		this.showLogs = showLogs ?? false
 		this.onRequest = onRequest
 		this.onSuccess = onSuccess
@@ -130,7 +133,7 @@ export class Fetchly {
 			nextConfig.tags = tags
 		}
 
-		return Object.keys(nextConfig).length === 0 ? null : nextConfig
+		return Object.keys(nextConfig).length > 0 ? nextConfig : null
 	}
 
 	/**
@@ -175,6 +178,8 @@ export class Fetchly {
 			referrerPolicy: options?.referrerPolicy ?? this.referrerPolicy,
 			signal: AbortSignal.timeout(options?.timeout ?? this.timeout ?? 3000),
 			cache: options?.cache ?? this.cache,
+			...options?.additionalOptions,
+			...this.additionalOptions,
 		}
 
 		// Append body to fetch options
