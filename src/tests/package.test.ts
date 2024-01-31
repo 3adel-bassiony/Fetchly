@@ -269,4 +269,13 @@ describe('Next.js Support', () => {
 
 		await fetchly.get('/products/1', { next: { revalidate: 20, tags: ['test2'] } })
 	})
+
+	it('Should make a GET request without next configuration', async () => {
+		const fetchly = new Fetchly({
+			baseURL: 'https://dummyjson.com',
+			showLogs: true,
+		})
+
+		await fetchly.get('/products/1')
+	})
 })

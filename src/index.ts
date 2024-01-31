@@ -102,6 +102,36 @@ export class Fetchly {
 	}
 
 	/**
+	 * Generates the configuration object for the NextFetchRequest.
+	 * @param options - The options object containing the configuration parameters.
+	 * @returns The NextFetchRequestConfig object or null if no configuration is provided.
+	 * @example
+	 * const options = {
+	 *   next: {
+	 *     revalidate: 60,
+	 *     tags: ['posts', 'comments']
+	 *   }
+	 * };
+	 * const config = generateNextConfig(options);
+	 * console.log(config);
+	 * // Output: { revalidate: 60, tags: ['posts', 'comments'] }
+	 */
+	private generateNextConfig(options?: Options): NextFetchRequestConfig | null {
+		const { revalidate, tags } = options?.next ?? this.next ?? {}
+		const nextConfig: NextFetchRequestConfig = {}
+
+		if (revalidate) {
+			nextConfig.revalidate = revalidate
+		}
+
+		if (tags) {
+			nextConfig.tags = tags
+		}
+
+		return Object.keys(nextConfig).length === 0 ? null : nextConfig
+	}
+
+	/**
 	 * Performs a fetch request with the specified URL, method, options, and body.
 	 * @template T The type of the response data.
 	 * @template E The type of the error data.
@@ -132,17 +162,6 @@ export class Fetchly {
 		const baseURL = options?.baseURL ?? this.baseURL ?? ''
 		const fullURL = baseURL + url + queryString
 
-		// Create next.js fetch config
-		const nextConfig: NextFetchRequestConfig = {}
-
-		if (options?.next?.revalidate || this.next?.revalidate) {
-			nextConfig.revalidate = options?.next?.revalidate ?? this.next?.revalidate
-		}
-
-		if (options?.next?.tags || this.next?.tags) {
-			nextConfig.tags = options?.next?.tags ?? this.next?.tags
-		}
-
 		// Create fetch options
 		const fetchOptions: RequestInit = {
 			method,
@@ -160,6 +179,9 @@ export class Fetchly {
 		if (body) {
 			fetchOptions.body = body instanceof FormData ? body : JSON.stringify(body)
 		}
+
+		// Create next.js fetch config
+		const nextConfig = this.generateNextConfig(options)
 
 		// Append next.js fetch config to fetch options
 		if (method === Method.GET && nextConfig) {
