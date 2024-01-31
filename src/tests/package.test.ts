@@ -293,13 +293,13 @@ describe('Passing Other Options', () => {
 			},
 		})
 
-		const { options } = await fetchly.get('/products/1')
+		const { config } = await fetchly.get('/products/1')
 
 		expect(fetchly).toHaveProperty('additionalOptions', {
 			foo: 'bar',
 		})
 
-		expect(options).toHaveProperty('foo', 'bar')
+		expect(config).toHaveProperty('foo', 'bar')
 	})
 
 	it('Should make a GET request with custom local options', async () => {
@@ -308,13 +308,13 @@ describe('Passing Other Options', () => {
 			showLogs: true,
 		})
 
-		const { options } = await fetchly.get('/products/1', {
+		const { config } = await fetchly.get('/products/1', {
 			additionalOptions: {
 				foo: 'bar',
 			},
 		})
 
-		expect(options).toHaveProperty('foo', 'bar')
+		expect(config).toHaveProperty('foo', 'bar')
 	})
 
 	it('Should make a GET request with custom global and local options', async () => {
@@ -326,7 +326,7 @@ describe('Passing Other Options', () => {
 			},
 		})
 
-		const { options } = await fetchly.get('/products/1', {
+		const { config } = await fetchly.get('/products/1', {
 			additionalOptions: {
 				baz: 'bar',
 			},
@@ -335,7 +335,7 @@ describe('Passing Other Options', () => {
 			foo: 'bar',
 		})
 
-		expect(options).toHaveProperty('foo', 'bar')
-		expect(options).toHaveProperty('baz', 'bar')
+		expect(config).toHaveProperty('foo', 'bar')
+		expect(config).toHaveProperty('baz', 'bar')
 	})
 })

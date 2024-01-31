@@ -8,7 +8,7 @@ import { Params } from './Params'
  */
 export type Options = {
 	baseURL?: string
-	headers?: HeadersInit
+	headers?: Record<string, unknown>
 	params?: Params
 	timeout?: number
 	mode?: RequestMode

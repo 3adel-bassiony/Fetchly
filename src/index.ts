@@ -7,10 +7,11 @@ import { FetchlyResult } from './types/FetchlyResult'
 import { NextFetchRequestConfig } from './types/NextFetchRequestConfig'
 import { Options } from './types/Options'
 import { Params } from './types/Params'
+import { RequestConfig } from './types/RequestConfig'
 
 export class Fetchly {
 	private baseURL?: string
-	private headers?: HeadersInit
+	private headers?: Record<string, unknown>
 	private params?: Params
 	private timeout?: number
 	private mode?: RequestMode
@@ -85,7 +86,7 @@ export class Fetchly {
 		} = options
 
 		this.baseURL = baseURL
-		this.headers = headers
+		this.headers = headers ?? { 'Content-Type': 'application/json' }
 		this.params = params
 		this.timeout = timeout ?? 30000
 		this.mode = mode ?? 'same-origin'
@@ -168,23 +169,23 @@ export class Fetchly {
 		const fullURL = baseURL + url + queryString
 
 		// Create fetch options
-		const fetchOptions: RequestInit = {
+		const requestConfig: RequestConfig = {
 			method,
 			headers: { ...this.headers, ...options?.headers },
 			mode: options?.mode ?? this.mode,
+			cache: options?.cache ?? this.cache,
 			credentials: options?.credentials ?? this.credentials,
 			redirect: options?.redirect ?? this.redirect,
 			referrer: options?.referrer ?? this.referrer,
 			referrerPolicy: options?.referrerPolicy ?? this.referrerPolicy,
 			signal: AbortSignal.timeout(options?.timeout ?? this.timeout ?? 3000),
-			cache: options?.cache ?? this.cache,
 			...options?.additionalOptions,
 			...this.additionalOptions,
 		}
 
 		// Append body to fetch options
 		if (body) {
-			fetchOptions.body = body instanceof FormData ? body : JSON.stringify(body)
+			requestConfig.body = body instanceof FormData ? body : JSON.stringify(body)
 		}
 
 		// Create next.js fetch config
@@ -192,15 +193,15 @@ export class Fetchly {
 
 		// Append next.js fetch config to fetch options
 		if (method === Method.GET && nextConfig) {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			(fetchOptions as any).next = nextConfig
+			requestConfig.next = nextConfig
 		}
 
 		try {
 			this?.onRequest?.()
 			options?.onRequest?.()
 
-			const response = await fetch(fullURL, fetchOptions)
+			const response = await fetch(fullURL, requestConfig as RequestInit)
+
 			let responseFormat = options?.responseFormat ?? this.responseFormat
 			let parsedResponse = null
 
@@ -246,12 +247,13 @@ export class Fetchly {
 
 				const duration = Math.floor(endTime - startTime).toFixed(0)
 
-				console.debug(`${method} -> ${fullURL} -> `, {
+				console.debug(`[ ${method} ] ${fullURL} -> `, {
 					status: response.status,
 					duration: `${duration} ms`,
-					options: fetchOptions,
 					body: body ?? null,
-					requestHeaders: fetchOptions.headers,
+					options: options ?? null,
+					requestConfig,
+					requestHeaders: requestConfig.headers,
 					responseHeaders: Object.fromEntries(response.headers.entries()),
 					response: parsedResponse,
 				})
@@ -266,7 +268,7 @@ export class Fetchly {
 			}
 
 			return {
-				options: fetchOptions,
+				config: requestConfig,
 				status: response.ok ? Status.Success : Status.Error,
 				statusCode: response.status,
 				statusText: response.statusText,
@@ -299,17 +301,19 @@ export class Fetchly {
 
 				const duration = Math.floor(endTime - startTime).toFixed(0)
 
-				console.debug(`${method} -> ${fullURL} -> `, {
+				console.debug(`[ ${method} ] ${fullURL} -> `, {
 					status: statusCode,
 					duration: `${duration} ms`,
-					options: fetchOptions,
 					body: body ?? null,
+					options: options ?? null,
+					requestConfig,
+					requestHeaders: requestConfig.headers,
 					error,
 				})
 			}
 
 			return {
-				options: fetchOptions,
+				config: requestConfig,
 				status: Status.Error,
 				statusCode,
 				statusText,
