@@ -132,11 +132,18 @@ export class Fetchly {
 		const baseURL = options?.baseURL ?? this.baseURL ?? ''
 		const fullURL = baseURL + url + queryString
 
-		const nextConfig: NextFetchRequestConfig = {
-			revalidate: options?.next?.revalidate ?? this.next?.revalidate,
-			tags: options?.next?.tags ?? this.next?.tags,
+		// Create next.js fetch config
+		const nextConfig: NextFetchRequestConfig = {}
+
+		if (options?.next?.revalidate || this.next?.revalidate) {
+			nextConfig.revalidate = options?.next?.revalidate ?? this.next?.revalidate
 		}
 
+		if (options?.next?.tags || this.next?.tags) {
+			nextConfig.tags = options?.next?.tags ?? this.next?.tags
+		}
+
+		// Create fetch options
 		const fetchOptions: RequestInit = {
 			method,
 			headers: { ...this.headers, ...options?.headers },
@@ -155,7 +162,7 @@ export class Fetchly {
 		}
 
 		// Append next.js fetch config to fetch options
-		if (method === Method.GET) {
+		if (method === Method.GET && nextConfig) {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(fetchOptions as any).next = nextConfig
 		}
