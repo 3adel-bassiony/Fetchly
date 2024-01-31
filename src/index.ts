@@ -126,11 +126,11 @@ export class Fetchly {
 
 		const nextConfig: NextFetchRequestConfig = {}
 
-		if (revalidate) {
+		if (revalidate !== undefined) {
 			nextConfig.revalidate = revalidate
 		}
 
-		if (tags) {
+		if (tags !== undefined) {
 			nextConfig.tags = tags
 		}
 
