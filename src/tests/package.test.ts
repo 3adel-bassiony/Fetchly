@@ -105,14 +105,17 @@ describe('Verification of Fetchly RESTful Operations Success Scenarios', () => {
 
 		const { data, error, status, statusCode, statusText, hasError, errorType, internalError } = await fetchly.put(
 			'/products/1',
-			requestBody
+			requestBody,
+			{ showLogs: true }
 		)
 
 		expect(data).toStrictEqual({
 			id: 1,
-			brand: 'Apple',
-			category: 'smartphones',
-			description: 'An apple mobile which is nothing like apple',
+			title: 'New Product Title',
+			price: 549,
+			discountPercentage: 12.96,
+			stock: 94,
+			rating: 4.69,
 			images: [
 				'https://cdn.dummyjson.com/product-images/1/1.jpg',
 				'https://cdn.dummyjson.com/product-images/1/2.jpg',
@@ -120,11 +123,10 @@ describe('Verification of Fetchly RESTful Operations Success Scenarios', () => {
 				'https://cdn.dummyjson.com/product-images/1/4.jpg',
 				'https://cdn.dummyjson.com/product-images/1/thumbnail.jpg',
 			],
-			price: 549,
-			rating: 4.69,
-			stock: 94,
 			thumbnail: 'https://cdn.dummyjson.com/product-images/1/thumbnail.jpg',
-			title: 'New Product Title',
+			description: 'An apple mobile which is nothing like apple',
+			brand: 'Apple',
+			category: 'smartphones',
 		})
 		expect(error).toBeNull()
 		expect(statusCode).toBe(200)
@@ -248,7 +250,7 @@ describe('Next.js Support', () => {
 	it('Should make a GET request with next configuration', async () => {
 		const fetchly = new Fetchly({
 			baseURL: 'https://dummyjson.com',
-			showLogs: true,
+			showLogs: false,
 			next: {
 				revalidate: 10,
 			},
@@ -264,7 +266,7 @@ describe('Next.js Support', () => {
 	it('Should make a GET request with global and local next configuration', async () => {
 		const fetchly = new Fetchly({
 			baseURL: 'https://dummyjson.com',
-			showLogs: true,
+			showLogs: false,
 			next: {
 				revalidate: 10,
 			},
@@ -276,7 +278,7 @@ describe('Next.js Support', () => {
 	it('Should make a GET request without next configuration', async () => {
 		const fetchly = new Fetchly({
 			baseURL: 'https://dummyjson.com',
-			showLogs: true,
+			showLogs: false,
 		})
 
 		await fetchly.get('/products/1')
@@ -287,7 +289,7 @@ describe('Passing Other Options', () => {
 	it('Should make a GET request with custom global options', async () => {
 		const fetchly = new Fetchly({
 			baseURL: 'https://dummyjson.com',
-			showLogs: true,
+			showLogs: false,
 			additionalOptions: {
 				foo: 'bar',
 			},
@@ -305,7 +307,7 @@ describe('Passing Other Options', () => {
 	it('Should make a GET request with custom local options', async () => {
 		const fetchly = new Fetchly({
 			baseURL: 'https://dummyjson.com',
-			showLogs: true,
+			showLogs: false,
 		})
 
 		const { config } = await fetchly.get('/products/1', {
@@ -320,7 +322,7 @@ describe('Passing Other Options', () => {
 	it('Should make a GET request with custom global and local options', async () => {
 		const fetchly = new Fetchly({
 			baseURL: 'https://dummyjson.com',
-			showLogs: true,
+			showLogs: false,
 			additionalOptions: {
 				foo: 'bar',
 			},
@@ -337,5 +339,21 @@ describe('Passing Other Options', () => {
 
 		expect(config).toHaveProperty('foo', 'bar')
 		expect(config).toHaveProperty('baz', 'bar')
+	})
+
+	it('Should make a GET request with proxy - Bun Only', async () => {
+		const fetchly = new Fetchly({
+			baseURL: 'https://dummyjson.com',
+			showLogs: false,
+			proxy: 'http://fixie:htb8qqSUVzUYxVe@olympic.usefixie.com:80',
+		})
+
+		const { config } = await fetchly.get('/products/1', {
+			additionalOptions: {
+				foo: 'bar',
+			},
+		})
+
+		expect(config).toHaveProperty('foo', 'bar')
 	})
 })

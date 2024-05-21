@@ -19,6 +19,7 @@ export type Options = {
 	referrerPolicy?: ReferrerPolicy
 	signal?: AbortSignal | null
 	responseFormat?: ResponseFormat
+	proxy?: string
 	next?: NextFetchRequestConfig | undefined
 	showLogs?: boolean
 	additionalOptions?: Record<string, unknown>

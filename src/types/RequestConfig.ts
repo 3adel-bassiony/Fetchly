@@ -11,5 +11,6 @@ export type RequestConfig = {
 	referrerPolicy?: ReferrerPolicy
 	signal?: AbortSignal | null
 	body?: unknown
+	proxy?: string
 	next?: NextFetchRequestConfig
 }

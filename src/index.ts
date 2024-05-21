@@ -21,6 +21,7 @@ export class Fetchly {
 	private referrer?: string
 	private referrerPolicy?: ReferrerPolicy
 	private responseFormat?: ResponseFormat
+	private proxy?: string
 	private next?: NextFetchRequestConfig | undefined
 	private additionalOptions?: Record<string, unknown>
 	private showLogs: boolean
@@ -76,6 +77,7 @@ export class Fetchly {
 			referrer,
 			referrerPolicy,
 			responseFormat,
+			proxy,
 			next,
 			additionalOptions,
 			showLogs,
@@ -96,6 +98,7 @@ export class Fetchly {
 		this.referrer = referrer ?? 'about:client'
 		this.referrerPolicy = referrerPolicy ?? 'no-referrer'
 		this.responseFormat = responseFormat
+		this.proxy = proxy
 		this.next = next
 		this.additionalOptions = additionalOptions
 		this.showLogs = showLogs ?? false
@@ -179,6 +182,7 @@ export class Fetchly {
 			referrer: options?.referrer ?? this.referrer,
 			referrerPolicy: options?.referrerPolicy ?? this.referrerPolicy,
 			signal: AbortSignal.timeout(options?.timeout ?? this.timeout ?? 3000),
+			proxy: options?.proxy ?? this.proxy,
 			...options?.additionalOptions,
 			...this.additionalOptions,
 		}
