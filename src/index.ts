@@ -2,6 +2,7 @@ import { ErrorType } from './enums/ErrorType'
 import { Method } from './enums/Method'
 import { ResponseFormat } from './enums/ResponseFormat'
 import { Status } from './enums/Status'
+import { createTimeoutSignal } from './helpers/createTimeoutSignal'
 import { stringifyParams } from './helpers/stringifyParams'
 import { FetchlyResult } from './types/FetchlyResult'
 import { NextFetchRequestConfig } from './types/NextFetchRequestConfig'
@@ -181,7 +182,7 @@ export class Fetchly {
 			redirect: options?.redirect ?? this.redirect,
 			referrer: options?.referrer ?? this.referrer,
 			referrerPolicy: options?.referrerPolicy ?? this.referrerPolicy,
-			signal: AbortSignal.timeout(options?.timeout ?? this.timeout ?? 3000),
+			signal: createTimeoutSignal(options?.timeout ?? this.timeout ?? 3000),
 			proxy: options?.proxy ?? this.proxy,
 			...options?.additionalOptions,
 			...this.additionalOptions,
