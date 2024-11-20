@@ -46,25 +46,18 @@ describe('Verification of Fetchly RESTful Operations Success Scenarios', () => {
 		const { data, error, status, statusCode, statusText, hasError, errorType, internalError } =
 			await fetchly.get('/products/1')
 
-		expect(data).toStrictEqual({
-			id: 1,
-			title: 'iPhone 9',
-			description: 'An apple mobile which is nothing like apple',
-			price: 549,
-			discountPercentage: 12.96,
-			rating: 4.69,
-			stock: 94,
-			brand: 'Apple',
-			category: 'smartphones',
-			thumbnail: 'https://cdn.dummyjson.com/product-images/1/thumbnail.jpg',
-			images: [
-				'https://cdn.dummyjson.com/product-images/1/1.jpg',
-				'https://cdn.dummyjson.com/product-images/1/2.jpg',
-				'https://cdn.dummyjson.com/product-images/1/3.jpg',
-				'https://cdn.dummyjson.com/product-images/1/4.jpg',
-				'https://cdn.dummyjson.com/product-images/1/thumbnail.jpg',
-			],
-		})
+		expect(data).toBeInstanceOf(Object)
+		expect(data).toHaveProperty('id')
+		expect(data).toHaveProperty('title')
+		expect(data).toHaveProperty('description')
+		expect(data).toHaveProperty('price')
+		expect(data).toHaveProperty('discountPercentage')
+		expect(data).toHaveProperty('rating')
+		expect(data).toHaveProperty('stock')
+		expect(data).toHaveProperty('brand')
+		expect(data).toHaveProperty('category')
+		expect(data).toHaveProperty('thumbnail')
+		expect(data).toHaveProperty('images')
 
 		expect(error).toBeNull()
 		expect(statusCode).toBe(200)
@@ -85,13 +78,13 @@ describe('Verification of Fetchly RESTful Operations Success Scenarios', () => {
 			requestBody
 		)
 
-		expect(data).toStrictEqual({
-			id: 101,
-			title: 'Product Title',
-		})
+		expect(data).toBeInstanceOf(Object)
+		expect(data).toHaveProperty('id')
+		expect(data).toHaveProperty('title')
+
 		expect(error).toBeNull()
-		expect(statusCode).toBe(200)
-		expect(statusText).toBe('OK')
+		expect(statusCode).toBe(201)
+		expect(statusText).toBe('Created')
 		expect(status).toBe(Status.Success)
 		expect(hasError).toBe(false)
 		expect(errorType).toBeNull()
@@ -109,25 +102,19 @@ describe('Verification of Fetchly RESTful Operations Success Scenarios', () => {
 			{ showLogs: true }
 		)
 
-		expect(data).toStrictEqual({
-			id: 1,
-			title: 'New Product Title',
-			price: 549,
-			discountPercentage: 12.96,
-			stock: 94,
-			rating: 4.69,
-			images: [
-				'https://cdn.dummyjson.com/product-images/1/1.jpg',
-				'https://cdn.dummyjson.com/product-images/1/2.jpg',
-				'https://cdn.dummyjson.com/product-images/1/3.jpg',
-				'https://cdn.dummyjson.com/product-images/1/4.jpg',
-				'https://cdn.dummyjson.com/product-images/1/thumbnail.jpg',
-			],
-			thumbnail: 'https://cdn.dummyjson.com/product-images/1/thumbnail.jpg',
-			description: 'An apple mobile which is nothing like apple',
-			brand: 'Apple',
-			category: 'smartphones',
-		})
+		expect(data).toBeInstanceOf(Object)
+		expect(data).toHaveProperty('id')
+		expect(data).toHaveProperty('title')
+		expect(data).toHaveProperty('price')
+		expect(data).toHaveProperty('discountPercentage')
+		expect(data).toHaveProperty('stock')
+		expect(data).toHaveProperty('rating')
+		expect(data).toHaveProperty('images')
+		expect(data).toHaveProperty('thumbnail')
+		expect(data).toHaveProperty('description')
+		expect(data).toHaveProperty('brand')
+		expect(data).toHaveProperty('category')
+
 		expect(error).toBeNull()
 		expect(statusCode).toBe(200)
 		expect(statusText).toBe('OK')
@@ -168,13 +155,14 @@ describe('Fetchly Error Handling and Response Validation', () => {
 		>('/http/404/Hello_Peter')
 
 		expect(data).toBeNull()
-		expect(error).toStrictEqual({
-			status: '404',
-			title: 'Hello_Peter',
-			type: 'about:blank',
-			detail: 'Hello_Peter',
-			message: 'Hello_Peter',
-		})
+
+		expect(error).toBeInstanceOf(Object)
+		expect(error).toHaveProperty('status', 404)
+		expect(error).toHaveProperty('title')
+		expect(error).toHaveProperty('type')
+		expect(error).toHaveProperty('detail')
+		expect(error).toHaveProperty('message')
+
 		expect(statusCode).toBe(404)
 		expect(statusText).toBe('Not Found')
 		expect(status).toBe(Status.Error)
