@@ -1,6 +1,12 @@
 {
-	"include": ["./src/**/*"],
-	"exclude": ["node_modules", "build", "./src/tests/**/*"],
+	"include": [
+		"./src/**/*"
+	],
+	"exclude": [
+		"node_modules",
+		"build",
+		"./src/tests/**/*"
+	],
 	"compilerOptions": {
 		"declaration": true,
 		"emitDecoratorMetadata": true,
@@ -18,7 +24,9 @@
 		"rootDir": "./src",
 		"composite": true,
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": [
+				"./src/*"
+			]
 		}
 	}
 }
