@@ -384,6 +384,24 @@ export class Fetchly {
 	}
 
 	/**
+	 * Sends a PATCH request to the specified URL with the provided body and options.
+	 * @param url The URL to send the request to.
+	 * @param body The body of the request.
+	 * @param options The options for the request.
+	 * @returns A promise that resolves to the response of the request.
+	 * @example
+	 * const response = await patch('/api/users/1', { name: 'John Doe' });
+	 * console.log(response.data); // Output: { id: 1, name: 'John Doe' }
+	 */
+	public async patch<T = unknown, E = unknown>(
+		url: string,
+		body: unknown,
+		options?: Options
+	): Promise<FetchlyResult<T, E>> {
+		return this._fetch<T, E>(url, Method.PATCH, options, body)
+	}
+
+	/**
 	 * Sends a DELETE request to the specified URL.
 	 *
 	 * @param url - The URL to send the request to.
