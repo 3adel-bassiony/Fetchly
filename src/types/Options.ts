@@ -24,7 +24,7 @@ export type Options = {
 	showLogs?: boolean
 	additionalOptions?: Record<string, unknown>
 	onRequest?: () => void
-	onSuccess?: () => void
-	onError?: () => void
-	onInternalError?: () => void
+	onSuccess?: (response: unknown) => void
+	onError?: (error: unknown) => void
+	onInternalError?: (error: unknown) => void
 }

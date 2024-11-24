@@ -27,9 +27,9 @@ export class Fetchly {
 	private additionalOptions?: Record<string, unknown>
 	private showLogs: boolean
 	private onRequest?: () => void
-	private onSuccess?: () => void
-	private onError?: () => void
-	private onInternalError?: () => void
+	private onSuccess?: (data: unknown) => void
+	private onError?: (error: unknown) => void
+	private onInternalError?: (error: unknown) => void
 
 	/**
 	 * Constructs a new instance of the Fetchly class.
@@ -265,11 +265,11 @@ export class Fetchly {
 			}
 
 			if (!response.ok) {
-				this?.onError?.()
-				options?.onError?.()
+				this?.onError?.(parsedResponse)
+				options?.onError?.(parsedResponse)
 			} else {
-				this?.onSuccess?.()
-				options?.onSuccess?.()
+				this?.onSuccess?.(parsedResponse)
+				options?.onSuccess?.(parsedResponse)
 			}
 
 			return {
@@ -298,8 +298,8 @@ export class Fetchly {
 				statusText = error.statusText
 			}
 
-			this?.onInternalError?.()
-			options?.onInternalError?.()
+			this?.onInternalError?.(error)
+			options?.onInternalError?.(error)
 
 			if (showLogs) {
 				const endTime = performance.now()

@@ -187,8 +187,12 @@ describe('Fetchly Hooks', () => {
 	it('Should be able to use onSuccess hook', async () => {
 		let text = null
 		await fetchly.get('/products/1', {
-			onSuccess: () => {
+			onSuccess: (response) => {
 				text = 'Success'
+
+				expect(response).toBeInstanceOf(Object)
+				expect(response).toHaveProperty('id')
+				expect(response).toHaveProperty('title')
 			},
 		})
 
@@ -198,8 +202,15 @@ describe('Fetchly Hooks', () => {
 	it('Should be able to use onError hook', async () => {
 		let text = null
 		await fetchly.get('/http/404/Hello_Peter', {
-			onError: () => {
+			onError: (error: Record<string, unknown>) => {
 				text = 'Error'
+
+				expect(error).toBeInstanceOf(Object)
+				expect(error).toHaveProperty('status', 404)
+				expect(error).toHaveProperty('title')
+				expect(error).toHaveProperty('type')
+				expect(error).toHaveProperty('detail')
+				expect(error).toHaveProperty('message')
 			},
 		})
 
