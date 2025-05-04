@@ -4,6 +4,9 @@ import { Status } from '../enums/Status'
 import { stringifyParams } from '../helpers/stringifyParams'
 import fetchly, { Fetchly } from '../index'
 
+// ---------------------------------------------------------------------------------------------------------------------
+// MARK: Instance Creation and Configuration
+// ---------------------------------------------------------------------------------------------------------------------
 describe('Fetchly', () => {
 	it('Should verifies that a new instance of Fetchly is successfully created', async () => {
 		const fetchly = new Fetchly({
@@ -41,7 +44,10 @@ describe('Fetchly', () => {
 	})
 })
 
-describe('Verification of Fetchly RESTful Operations Success Scenarios', () => {
+// ---------------------------------------------------------------------------------------------------------------------
+// MARK: Verification of Fetchly RESTful Operations Success Scenarios
+// ---------------------------------------------------------------------------------------------------------------------
+describe('Verification of RESTful Operations Success Scenarios', () => {
 	it('Should be able to perform a GET request', async () => {
 		const { data, error, status, statusCode, statusText, hasError, errorType, internalError } =
 			await fetchly.get('/products/1')
@@ -124,6 +130,39 @@ describe('Verification of Fetchly RESTful Operations Success Scenarios', () => {
 		expect(internalError).toBeNull()
 	})
 
+	it('Should be able to perform a PATCH request', async () => {
+		const requestBody = {
+			title: 'New Product Title',
+		}
+
+		const { data, error, status, statusCode, statusText, hasError, errorType, internalError } = await fetchly.patch(
+			'/products/1',
+			requestBody,
+			{ showLogs: true }
+		)
+
+		expect(data).toBeInstanceOf(Object)
+		expect(data).toHaveProperty('id')
+		expect(data).toHaveProperty('title')
+		expect(data).toHaveProperty('price')
+		expect(data).toHaveProperty('discountPercentage')
+		expect(data).toHaveProperty('stock')
+		expect(data).toHaveProperty('rating')
+		expect(data).toHaveProperty('images')
+		expect(data).toHaveProperty('thumbnail')
+		expect(data).toHaveProperty('description')
+		expect(data).toHaveProperty('brand')
+		expect(data).toHaveProperty('category')
+
+		expect(error).toBeNull()
+		expect(statusCode).toBe(200)
+		expect(statusText).toBe('OK')
+		expect(status).toBe(Status.Success)
+		expect(hasError).toBe(false)
+		expect(errorType).toBeNull()
+		expect(internalError).toBeNull()
+	})
+
 	it('Should be able to perform a DELETE request', async () => {
 		const { data, error, status, statusCode, statusText, hasError, errorType, internalError } =
 			await fetchly.delete('/products/1')
@@ -139,6 +178,9 @@ describe('Verification of Fetchly RESTful Operations Success Scenarios', () => {
 	})
 })
 
+// ---------------------------------------------------------------------------------------------------------------------
+// MARK: Fetchly Error Handling and Response Validation
+// ---------------------------------------------------------------------------------------------------------------------
 describe('Fetchly Error Handling and Response Validation', () => {
 	it('Should handle an error when making a GET request using Fetchly', async () => {
 		type Error = {
@@ -170,8 +212,44 @@ describe('Fetchly Error Handling and Response Validation', () => {
 		expect(errorType).toBe('api')
 		expect(internalError).toBeNull()
 	})
+
+	it('Should handle an error when making a POST request using Fetchly', async () => {
+		type Error = {
+			status: string
+			title: string
+			type: string
+			detail: string
+			message: string
+		}
+
+		const { data, error, status, statusCode, statusText, hasError, errorType, internalError } = await fetchly.post<
+			unknown,
+			Error
+		>('/http/500', {
+			body: {},
+		})
+
+		expect(data).toBeNull()
+
+		expect(error).toBeInstanceOf(Object)
+		expect(error).toHaveProperty('status', 500)
+		expect(error).toHaveProperty('title')
+		expect(error).toHaveProperty('type')
+		expect(error).toHaveProperty('detail')
+		expect(error).toHaveProperty('message')
+
+		expect(statusCode).toBe(500)
+		expect(statusText).toBe('Internal Server Error')
+		expect(status).toBe(Status.Error)
+		expect(hasError).toBe(true)
+		expect(errorType).toBe('api')
+		expect(internalError).toBeNull()
+	})
 })
 
+// ---------------------------------------------------------------------------------------------------------------------
+// MARK: Fetchly Hooks
+// ---------------------------------------------------------------------------------------------------------------------
 describe('Fetchly Hooks', () => {
 	it('Should be able to use onRequest hook', async () => {
 		let text = null
@@ -201,12 +279,12 @@ describe('Fetchly Hooks', () => {
 
 	it('Should be able to use onError hook', async () => {
 		let text = null
-		await fetchly.get('/http/404/Hello_Peter', {
+		await fetchly.get('/http/500', {
 			onError: (error: Record<string, unknown>) => {
 				text = 'Error'
 
 				expect(error).toBeInstanceOf(Object)
-				expect(error).toHaveProperty('status', 404)
+				expect(error).toHaveProperty('status', 500)
 				expect(error).toHaveProperty('title')
 				expect(error).toHaveProperty('type')
 				expect(error).toHaveProperty('detail')
@@ -232,6 +310,9 @@ describe('Fetchly Hooks', () => {
 	})
 })
 
+// ---------------------------------------------------------------------------------------------------------------------
+// MARK: Fetchly Helpers
+// ---------------------------------------------------------------------------------------------------------------------
 describe('Fetchly Helpers', () => {
 	it('Should stringify the search params and return a string', async () => {
 		const params = {
@@ -245,6 +326,9 @@ describe('Fetchly Helpers', () => {
 	})
 })
 
+// ---------------------------------------------------------------------------------------------------------------------
+// MARK: Next.js Support
+// ---------------------------------------------------------------------------------------------------------------------
 describe('Next.js Support', () => {
 	it('Should make a GET request with next configuration', async () => {
 		const fetchly = new Fetchly({
@@ -284,6 +368,9 @@ describe('Next.js Support', () => {
 	})
 })
 
+// ---------------------------------------------------------------------------------------------------------------------
+// MARK: Passing Other Options
+// ---------------------------------------------------------------------------------------------------------------------
 describe('Passing Other Options', () => {
 	it('Should make a GET request with custom global options', async () => {
 		const fetchly = new Fetchly({

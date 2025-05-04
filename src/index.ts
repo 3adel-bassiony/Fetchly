@@ -284,6 +284,9 @@ export class Fetchly {
 				internalError: null,
 			}
 		} catch (error) {
+			this?.onError?.(error)
+			options?.onError?.(error)
+
 			let errorType = ErrorType.Internal
 			let statusCode = 500
 			let statusText = 'Internal Error'
